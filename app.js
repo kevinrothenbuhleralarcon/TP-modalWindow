@@ -21,12 +21,14 @@ const openModal = function(e) {
 
 const closeModal = function(e) {
     if (modal === null) return
-    modal.style.display = "none"
     modal.setAttribute("aria-hidden", true)
     modal.setAttribute("aria-modal", false)
     modal.querySelector(".js-modal-stop").removeEventListener("click", stopPropagation)
-    modal = null   
     if (previouslyFocusedElement !== null) previouslyFocusedElement.focus()
+    modal.addEventListener("animationend", () => {
+        modal.style.display = "none"
+        modal = null  
+    }, {once: true})
 }
 
 const stopPropagation = function(e) {
