@@ -33,9 +33,16 @@ const focusInModal = function(e) {
     e.preventDefault()
     if (!focusables?.length) return // Check that there's focusable element in the modal otherwise we'll have an error
     let index = focusables.findIndex(f => f === modal.querySelector(":focus"))
-    index++
+    if (e.shiftKey === true) {
+        index--
+    } else {
+        index++
+    }
     if (index >= focusables.length) {
         index = 0
+    }
+    if (index < 0) {
+        index = focusables.length - 1
     }
     focusables[index].focus()
 }
@@ -45,7 +52,7 @@ document.querySelectorAll(".js-modal").forEach(link => {
 })
 
 window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && e.key === "Esc") {
+    if (e.key === "Escape" || e.key === "Esc") {
         closeModal(e)
     }
     if(e.key === "Tab" && modal !== null) {
