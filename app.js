@@ -3,11 +3,14 @@
 let modal = null
 const focusableSelector = "button, a, input, textarea"
 let focusables = []
+let previouslyFocusedElement = null
 
 const openModal = function(e) {
     e.preventDefault()
+    previouslyFocusedElement = document.querySelector(":focus")
     modal = document.querySelector(e.target.getAttribute("href"))
     focusables = [...modal.querySelectorAll(focusableSelector)]
+    focusables[0].focus()
     modal.style.display = null
     modal.setAttribute("aria-hidden", false)
     modal.setAttribute("aria-modal", true)
@@ -23,6 +26,7 @@ const closeModal = function(e) {
     modal.setAttribute("aria-modal", false)
     modal.querySelector(".js-modal-stop").removeEventListener("click", stopPropagation)
     modal = null   
+    if (previouslyFocusedElement !== null) previouslyFocusedElement.focus()
 }
 
 const stopPropagation = function(e) {
